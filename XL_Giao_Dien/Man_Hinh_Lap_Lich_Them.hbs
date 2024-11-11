@@ -1,0 +1,151 @@
+{{> Dau_Trang}}
+<div class="p-4 m-1"></div>
+<div class="container-fluid">
+    <h3 class="col-12 col-md-8 mx-auto my-4">MÀN HÌNH TẠO XUẤT CHIẾU</h3>
+    <div class="d-flex justify-content-between row col-12 col-md-8 mx-auto my-4">
+        <form class="col-12 col-md-6 px-0" onsubmit="Tao_Xuat_Chieu(event)">
+            <div class="row mt-2">
+                <label class="col-form-label col-12 col-md-3" for="Phim">Tên Phim</label>
+                <div class="col-12 col-md-9">
+                    <select class="form-select" name="Phim" id="Phim">
+                        <option value="">Chọn Phim...</option>
+                        {{#each Danh_Sach_Phim}}
+                        <option value="{{ID}}">{{Ten}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <label class="col-form-label col-12 col-md-3" for="Rap">Rạp</label>
+                <div class="col-12 col-md-9">
+                    <select class="form-select" name="Rap" id="Rap" onchange="Loc_Phong()">
+                        <option value="">Chọn Rạp...</option>
+                        {{#each Danh_Sach_Rap}}
+                        <option value="{{ID}}">{{Ten}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <label class="col-form-label col-12 col-md-3" for="Phong">Phòng</label>
+                <div class="col-12 col-md-9">
+                    <select class="form-select" name="Phong" id="Phong">
+                        <option value="">Chọn Phòng...</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <label class="col-form-label col-12 col-md-3" for="Ngay_Chieu">Ngày Chiếu</label>
+                <div class="col-12 col-md-9">
+                    <input type="date" id="Ngay_Chieu" name="Ngay_Chieu" class="form-control">
+                </div>
+            </div>
+            <div class="row mt-2">
+                <label class="col-form-label col-12 col-md-3" for="Ca">Ca</label>
+                <div class="col-12 col-md-9">
+                    <select class="form-select" name="Ca" id="Ca">
+                        <option value="">Chọn Ca...</option>
+                        {{#each Danh_Sach_Ca}}
+                        <option value="{{ID}}">{{Bat_Dau}} - {{Ket_Thuc}} ({{Ten}})</option>
+                        {{/each}}
+                    </select>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <label class="col-form-label col-12 col-md-3" for="Ngay_Chieu">Đơn Giá Vé</label>
+                <div class="col-12 col-md-9">
+                    <input type="number" min="1" id="Don_Gia" name="Don_Gia" class="form-control">
+                </div>
+            </div>
+            <div class="rows align-items-center mt-4">
+                <button class="btn btn-success" type="submit">Tạo Xuất Chiếu</button>
+                <a class="btn btn-secondary" href="/lap-lich/danh-sach">Trở Về Trang Danh Sách</a>
+            </div>
+            <div id="Thong_Bao_Loi" class="col-12 alert alert-warning mt-3 d-none"></div>
+        </form>
+    </div>
+
+</div>
+<div class="p-4 m-1"></div>
+{{> Chan_Trang}}
+<script src="Tai_Nguyen/js/Tra_Cuu_Xuat_Chieu.js"></script>
+<script>
+    const Danh_Sach_Phong_Theo_Rap = JSON.parse(`{{{Danh_Sach_Phong_Theo_Rap}}}`)
+
+    const Loc_Phong = () => {
+        const Rap_ID = document.getElementById("Rap").value
+        const Phong_Select = document.getElementById("Phong")
+        Phong_Select.innerHTML = `<option value="0">Chọn Phòng...</option>`
+        console.log(Rap_ID)
+        if (Danh_Sach_Phong_Theo_Rap[Rap_ID]){
+            Danh_Sach_Phong_Theo_Rap[Rap_ID].forEach(Phong => {
+                Phong_Select.innerHTML += `<option value="${Phong.ID}">${Phong.Ten}</option>`
+            })
+        }
+    }
+
+    const Tao_Xuat_Chieu = async (event) => {
+        event.preventDefault()
+        const Thong_Bao_Loi = document.getElementById("Thong_Bao_Loi")
+        Thong_Bao_Loi.innerHTML = ``
+        Thong_Bao_Loi.classList.add("d-none")
+
+        const Bieu_Mau_Xuat_Chieu = event.target
+
+        const Phong_ID = Bieu_Mau_Xuat_Chieu.elements.Phong.value
+        const Phim_ID = Bieu_Mau_Xuat_Chieu.elements.Phim.value
+        const Ca_ID = Bieu_Mau_Xuat_Chieu.elements.Ca.value
+        const Ngay_Chieu = Bieu_Mau_Xuat_Chieu.elements.Ngay_Chieu.value
+        const Don_Gia = Bieu_Mau_Xuat_Chieu.elements.Don_Gia.value
+
+        if (!Phim_ID) {
+            Thong_Bao_Loi.innerHTML = "Vui lòng chọn phim!"
+            Thong_Bao_Loi.classList.remove("d-none")
+            return
+        }
+        if (!Phong_ID) {
+            Thong_Bao_Loi.innerHTML = "Vui lòng chọn phòng!"
+            Thong_Bao_Loi.classList.remove("d-none")
+            return
+        }
+        if (!Ngay_Chieu) {
+            Thong_Bao_Loi.innerHTML = "Vui lòng chọn ngày chiếu!"
+            Thong_Bao_Loi.classList.remove("d-none")
+            return
+        }
+        if (!Ca_ID) {
+            Thong_Bao_Loi.innerHTML = "Vui lòng chọn ca chiếu!"
+            Thong_Bao_Loi.classList.remove("d-none")
+            return
+        }
+        if (!Don_Gia) {
+            Thong_Bao_Loi.innerHTML = "Vui lòng chọn đơn giá vé!"
+            Thong_Bao_Loi.classList.remove("d-none")
+            return
+        }
+
+
+        const Phan_Hoi = await fetch("/lap-lich", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                Ngay_Chieu,
+                Don_Gia,
+                Phim_ID,
+                Ca_ID,
+                Phong_ID
+            })
+        })
+        const Ket_Qua = await Phan_Hoi.json()
+        if (Ket_Qua.error) {
+            Thong_Bao_Loi.innerHTML = Ket_Qua.error
+            Thong_Bao_Loi.classList.remove("d-none")
+            return
+        } else {
+            window.location.href = "/lap-lich/danh-sach"
+        }
+    }
+
+</script>

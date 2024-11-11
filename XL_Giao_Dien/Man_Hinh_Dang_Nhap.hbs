@@ -1,0 +1,59 @@
+<div class="container-fluid">
+    <div class="row col-12 col-md-6 col-lg-4 m-auto p-4">
+        <div class="bg-light shadow-sm rounded p-5">
+            <div class="d-flex justify-content-between align-items-center">
+                <span class="bg-info fw-bold px-4 py-1 rounded-pill fs-5">FCC</span>
+                <h2 class="text-end fw-bold fs-2 mb-0">ĐĂNG NHẬP</h2>
+            </div>
+            <form class="mt-4" onsubmit="Dang_Nhap(event)">
+                <div class="rows mt-3">
+                    <label class="form-label" for="Email">Email</label>
+                    <input class="form-control" type="text" name="Email" id="Email" placeholder="abc@gmail.com">
+                </div>
+                <div class="rows mt-3">
+                    <label class="form-label" for="Mat_Khau">Password</label>
+                    <input class="form-control" type="text" name="Mat_Khau" id="Mat_Khau" placeholder="mật khẩu...">
+                </div>
+                <div class="d-flex justify-content-end">
+                    <button class="ms-auto mt-4 btn btn-success" type="submit">Đăng Nhập</button>
+                </div>
+                <div class="col md-12 alert alert-warning mt-3 d-none" id="Loi_Dang_Nhap"></div>
+            </form>
+
+        </div>
+    </div>
+</div>
+{{> Chan_Trang}}
+
+<script>
+    const Dang_Nhap = (event) => {
+        event.preventDefault()
+
+        const Loi_Dang_Nhap = document.getElementById("Loi_Dang_Nhap")
+        Loi_Dang_Nhap.classList.add("d-none")
+        Loi_Dang_Nhap.innerHTML = ""
+
+        Yeu_Cau = {
+            Email: event.target.elements.Email.value,
+            Mat_Khau: event.target.elements.Mat_Khau.value
+        }
+
+        fetch("/dang-nhap", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(Yeu_Cau)
+        })
+            .then(Phan_Hoi => Phan_Hoi.json())
+            .then(Ket_Qua => {
+                if (Ket_Qua.error) {
+                    Loi_Dang_Nhap.classList.remove("d-none")
+                    Loi_Dang_Nhap.innerHTML = Ket_Qua.error.message
+                } else {
+                    window.location.reload()
+                }
+            })
+
+    }
+</script>

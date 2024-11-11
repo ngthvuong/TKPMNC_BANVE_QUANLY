@@ -1,0 +1,289 @@
+{{> Dau_Trang}}
+<div class="p-4 m-1"></div>
+<div class="container-fluid">
+    <h3 class="col-12 col-md-8 mx-auto my-4">MÀN HÌNH BÁN VÉ</h3>
+    <div class="d-flex justify-content-between row col-12 col-md-8 mx-auto my-4">
+        <form class="col-12 col-md-6 px-0" action="" id="Tra_Cuu_Ve_Form">
+            <div class="row mt-2">
+                <label class="col-form-label col-12 col-md-3" for="Phim">Tên Phim</label>
+                <div class="col-12 col-md-9">
+                    <select class="form-select" name="Phim" id="Phim" onchange="Loc_Du_Lieu()">
+                        <option value="0">Chọn Phim...</option>
+                        {{#each Danh_Sach_Phim}}
+                        <option value="{{ID}}">{{Ten}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <label class="col-form-label col-12 col-md-3" for="Rap">Rạp</label>
+                <div class="col-12 col-md-9">
+                    <select class="form-select" name="Rap" id="Rap" onchange="Loc_Du_Lieu()">
+                        <option value="0">Chọn Rạp...</option>
+                        {{#each Danh_Sach_Rap}}
+                        <option value="{{ID}}">{{Ten}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <label class="col-form-label col-12 col-md-3" for="Ngay_Chieu">Ngày Chiếu</label>
+                <div class="col-12 col-md-9">
+                    <select class="form-select" name="Ngay_Chieu" id="Ngay_Chieu" onchange="Loc_Du_Lieu()">
+                        <option value="">Chọn Ngày Chiếu...</option>
+                        {{#each Danh_Sach_Ngay_Chieu}}
+                        <option value="{{this}}">{{this}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <label class="col-form-label col-12 col-md-3" for="Ca">Ca</label>
+                <div class="col-12 col-md-9">
+                    <select class="form-select" name="Ca" id="Ca" onchange="Loc_Du_Lieu()">
+                        <option value="0">Chọn Ca...</option>
+                        {{#each Danh_Sach_Ca}}
+                        <option value="{{ID}}">{{Bat_Dau}} - {{Ket_Thuc}} ({{Ten}})</option>
+                        {{/each}}
+                    </select>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <label class="col-form-label col-12 col-md-3" for="Xuat_Chieu">Xuất Chiếu</label>
+                <div class="col-12 col-md-9">
+                    <select class="form-select" name="Xuat_Chieu" id="Xuat_Chieu"
+                        onChange="Tai_Xuat_Chieu(event)"></select>
+                </div>
+            </div>
+            <div id="Thong_Tin_Xuat_Chieu" class="d-none">
+                <h5 class="my-4">Danh Sách Ghế <span class="text-danger" id="So_Ghe_Trong"></span></h5>
+                <div id="Danh_Sach_Ghe"></div>
+            </div>
+        </form>
+        <form class="col-12 col-md-5 px-0" onSubmit="Tao_Ve(event)">
+            <h5>Thông Tin Vé</h5>
+            <div class="d-flex justify-content-between rows mt-2">
+                <span>Tên Phim</span>
+                <span id="Ve_Phim">-</span>
+            </div>
+            <div class="d-flex justify-content-between rows mt-2">
+                <span>Tên Rạp</span>
+                <span id="Ve_Rap">-</span>
+            </div>
+            <div class="d-flex justify-content-between rows mt-2">
+                <span>Tên Phòng</span>
+                <span id="Ve_Phong">-</span>
+            </div>
+            <div class="d-flex justify-content-between rows mt-2">
+                <span>Ngày Chiếu</span>
+                <span id="Ve_Ngay_Chieu">-</span>
+            </div>
+            <div class="d-flex justify-content-between rows mt-2">
+                <span>Giờ Chiếu</span>
+                <span id="Ve_Gio_Chieu">-</span>
+            </div>
+            <div class="d-flex justify-content-between rows mt-2">
+                <span>Số Ghế</span>
+                <span id="Ve_Ghe">-</span>
+            </div>
+            <input type="hidden" name="Ghe_ID" id="Ghe_ID" value="">
+            <input type="hidden" name="Xuat_Chieu_ID" id="Xuat_Chieu_ID" value="">
+            <button id="Nut_Tao_Ve" class="btn btn-success mt-4" type="submit">Tạo Vé</button>
+            <div id="Thong_Bao_Loi" class="col-12 alert alert-warning mt-3 d-none"></div>
+            <div id="Thong_Bao_Thong_Tin" class="col-12 alert alert-success mt-3 d-none">
+                <p>- Đã khởi tạo vé thành công!</p>
+                <button type="button" class="btn btn-success mt-4" onclick="Lam_Moi()">Thêm Vé</button>
+            </div>
+        </form>
+    </div>
+
+</div>
+<div class="p-4 m-1"></div>
+{{> Chan_Trang}}
+<script src="Tai_Nguyen/js/Tra_Cuu_Xuat_Chieu.js"></script>
+<script>
+    const Lam_Moi_Xuat_Chieu = () => {
+        const Thong_Tin_Xuat_Chieu = document.getElementById("Thong_Tin_Xuat_Chieu")
+        const Danh_Sach_Ghe = document.getElementById("Danh_Sach_Ghe")
+        Thong_Tin_Xuat_Chieu.classList.add("d-none")
+        Danh_Sach_Ghe.innerHTML = ``
+
+        document.getElementById("Ve_Phim").innerText = "-"
+        document.getElementById("Ve_Rap").innerText = "-"
+        document.getElementById("Ve_Phong").innerText = "-"
+        document.getElementById("Ve_Ngay_Chieu").innerText = "-"
+        document.getElementById("Ve_Gio_Chieu").innerText = "-"
+        document.getElementById("Ve_Ghe").innerText = "-"
+
+        document.getElementById("Xuat_Chieu_ID").value = ""
+        document.getElementById("Ghe_ID").value = ""
+
+    }
+    const Tai_Xuat_Chieu = async (event) => {
+        const Xuat_Chieu_ID = parseInt(document.getElementById("Xuat_Chieu").value)
+        if (Xuat_Chieu_ID != undefined) {
+
+            Lam_Moi_Xuat_Chieu()
+
+            Phan_Hoi = await fetch(`/ban-ve/xuat-chieu?ID=${Xuat_Chieu_ID}`, {
+                method: "GET"
+            })
+            Xuat_Chieu = await Phan_Hoi.json()
+            if (Xuat_Chieu) {
+                document.getElementById("Ve_Phim").innerText = Xuat_Chieu.Phim.Ten
+                document.getElementById("Ve_Rap").innerText = Xuat_Chieu.Phong.Rap.Ten
+                document.getElementById("Ve_Phong").innerText = Xuat_Chieu.Phong.Ten
+                document.getElementById("Ve_Ngay_Chieu").innerText = Xuat_Chieu.Ngay_Chieu
+                document.getElementById("Ve_Gio_Chieu").innerText = `${Xuat_Chieu.Ca.Bat_Dau} - ${Xuat_Chieu.Ca.Ket_Thuc} (${Xuat_Chieu.Ca.Ten})`
+                document.getElementById("Xuat_Chieu_ID").value = Xuat_Chieu.ID
+
+                const Thong_Tin_Xuat_Chieu = document.getElementById("Thong_Tin_Xuat_Chieu")
+                const Danh_Sach_Ghe = document.getElementById("Danh_Sach_Ghe")
+
+                const Ghe_Co_Ve = Xuat_Chieu.Ves.map(Ve => Ve.Ghe.ID)
+                const So_Ghe_Trong = Xuat_Chieu.Phong.Ghes.length - Ghe_Co_Ve.length
+                document.getElementById("So_Ghe_Trong").innerText = `(Còn ${So_Ghe_Trong} Ghế Trống)`
+
+                let Day_Ghe = document.createElement("div")
+                Day_Ghe.classList = "col-12 d-flex justify-content-between mt-2"
+                Xuat_Chieu.Phong.Ghes.forEach((Ghe, index) => {
+                    const gheElement = document.createElement("span")
+                    gheElement.classList = "btn btn-success px-2 py-1"
+                    if (!Ghe_Co_Ve.includes(Ghe.ID)) {
+                        gheElement.classList.remove("btn-success")
+                        gheElement.classList.add("btn-secondary")
+                        gheElement.classList.add("ghe_trong")
+                        gheElement.setAttribute("data-id", Ghe.ID)
+                        gheElement.setAttribute("data-ten", Ghe.Ten)
+                    }
+                    gheElement.innerText = String(index + 1).padStart(3, '0')
+                    Day_Ghe.append(gheElement)
+
+                    if ((index + 1) % 10 == 0) {
+                        Danh_Sach_Ghe.append(Day_Ghe)
+                        Day_Ghe = document.createElement("div")
+                        Day_Ghe.classList = "col-12 d-flex justify-content-between mt-2"
+                    }
+                })
+                if (Day_Ghe.children.length > 0) {
+                    Danh_Sach_Ghe.append(Day_Ghe);
+                }
+
+                Thong_Tin_Xuat_Chieu.classList.remove("d-none")
+            }
+        }
+    }
+
+    const Tao_Danh_Sach_Sach_Chieu = () => {
+        Xuat_Chieu_HTML = document.getElementById("Xuat_Chieu")
+        Xuat_Chieu_HTML.innerHTML = `<option value="0">Chọn Xuất Chiếu...</option>`
+        Danh_Sach_Xuat_Chieu.Danh_Sach_Xuat_Chieu_Da_Loc.forEach(Xuat_Chieu => {
+            const optionElement = document.createElement("option")
+            optionElement.setAttribute("value", Xuat_Chieu.ID)
+            optionElement.innerText = `
+                [${Xuat_Chieu.Ca.Bat_Dau}]
+                [${Xuat_Chieu.Ngay_Chieu}]
+                ${Xuat_Chieu.Phim.Ten} 
+                (${Xuat_Chieu.Phong.Loai_Phong.So_Ghe})`
+            Xuat_Chieu_HTML.append(optionElement)
+        })
+    }
+    const Loc_Du_Lieu = () => {
+        const Tra_Cuu_Ve_Form = document.getElementById("Tra_Cuu_Ve_Form")
+        Danh_Sach_Xuat_Chieu.Gan_Phim_ID(Tra_Cuu_Ve_Form.elements.Phim.value)
+        Danh_Sach_Xuat_Chieu.Gan_Rap_ID(Tra_Cuu_Ve_Form.elements.Rap.value)
+        Danh_Sach_Xuat_Chieu.Gan_Ca_ID(Tra_Cuu_Ve_Form.elements.Ca.value)
+        Danh_Sach_Xuat_Chieu.Gan_Ngay_Chieu(Tra_Cuu_Ve_Form.elements.Ngay_Chieu.value)
+        Danh_Sach_Xuat_Chieu.Loc_Xuat_Chieu()
+    }
+
+    const Chon_Ghe = () => {
+        document.getElementById('Danh_Sach_Ghe').addEventListener("click", (event) => {
+            Ghe_Trong = event.target.closest(".ghe_trong")
+            if (Ghe_Trong) {
+                document.getElementById('Danh_Sach_Ghe').querySelectorAll(".ghe_duoc_chon").forEach(Ghe => {
+                    Ghe.classList.remove("ghe_duoc_chon")
+                    Ghe.classList.remove("btn-warning")
+
+                    Ghe.classList.add("ghe_trong")
+                    Ghe.classList.add("btn-secondary")
+                })
+                Ghe_Trong.classList.add("ghe_duoc_chon")
+                Ghe_Trong.classList.add("btn-warning")
+                Ghe_Trong.classList.remove("ghe_trong")
+                Ghe_Trong.classList.remove("btn-secondary")
+
+
+                document.getElementById("Ve_Ghe").innerText = Ghe_Trong.getAttribute("data-ten")
+                document.getElementById("Ghe_ID").value = Ghe_Trong.getAttribute("data-id")
+
+            }
+        })
+    }
+    const Tao_Ve = async (event) => {
+        event.preventDefault()
+        const Thong_Bao_Loi = document.getElementById("Thong_Bao_Loi")
+        Thong_Bao_Loi.innerHTML = ``
+        Thong_Bao_Loi.classList.add("d-none")
+
+        const Bieu_Mau_Ve = event.target
+        const Xuat_Chieu_ID = Bieu_Mau_Ve.elements.Xuat_Chieu_ID.value
+        const Ghe_ID = Bieu_Mau_Ve.elements.Ghe_ID.value
+
+        if (!Xuat_Chieu_ID) {
+            Thong_Bao_Loi.innerHTML = "Vui lòng chọn xuất chiếu phim!"
+            Thong_Bao_Loi.classList.remove("d-none")
+            return
+        }
+        if (!Ghe_ID) {
+            Thong_Bao_Loi.innerHTML = "Vui lòng chọn ghế!"
+            Thong_Bao_Loi.classList.remove("d-none")
+            return
+        }
+
+        const Phan_Hoi = await fetch("/ban-ve/tao-ve", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                Xuat_Chieu_ID,
+                Ghe_ID
+            })
+        })
+        const Ket_Qua = await Phan_Hoi.json()
+        if (Ket_Qua.error) {
+            Thong_Bao_Loi.innerHTML = Ket_Qua.error
+            Thong_Bao_Loi.classList.remove("d-none")
+            return
+        } else {
+            document.getElementById("Nut_Tao_Ve").classList.add("d-none")
+            document.getElementById("Thong_Bao_Thong_Tin").classList.remove("d-none")
+
+
+            document.getElementById('Danh_Sach_Ghe').querySelectorAll(".ghe_trong").forEach(Ghe => {
+                Ghe.classList.remove("ghe_trong")
+            })
+            document.getElementById('Tra_Cuu_Ve_Form').querySelectorAll("select").forEach(select => {
+                select.disabled = true
+            })
+        }
+    }
+
+    const Lam_Moi = () => {
+        document.getElementById("Xuat_Chieu").dispatchEvent(new Event('change'))
+        document.getElementById("Nut_Tao_Ve").classList.remove("d-none")
+        document.getElementById("Thong_Bao_Thong_Tin").classList.add("d-none")
+
+        document.getElementById('Tra_Cuu_Ve_Form').querySelectorAll("select").forEach(select => {
+            select.disabled = false
+        })
+    }
+
+    const Danh_Sach_Xuat_Chieu = new Tra_Cuu_Xuat_Chieu(JSON.parse(`{{{Danh_Sach_Xuat_Chieu}}}`))
+    Danh_Sach_Xuat_Chieu.Dang_Ky_Xu_Ly_Su_Kien(Tao_Danh_Sach_Sach_Chieu)
+    Danh_Sach_Xuat_Chieu.Loc_Xuat_Chieu()
+
+    Chon_Ghe()
+
+</script>

@@ -1,0 +1,18 @@
+{
+  "name": "Ban_Ve_Nhan_Vien_Ban_Ve_He_Khach",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.1",
+    "express-handlebars": "^8.0.1",
+    "express-pagination": "^0.0.5",
+    "express-session": "^1.18.1"
+  }
+}

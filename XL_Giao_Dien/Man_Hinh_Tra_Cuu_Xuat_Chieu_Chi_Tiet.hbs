@@ -1,0 +1,93 @@
+{{> Dau_Trang}}
+<div class="p-4 m-1"></div>
+<div class="container-fluid">
+    <h3 class="col-12 col-xl-8 mx-auto my-4">MÀN HÌNH TRA CỨU XUẤT CHIẾU CHI TIẾT</h3>
+    <div class="d-flex justify-content-between row col-12 col-md-8 mx-auto my-4">
+        <div class="col-12 col-md-6 px-0">
+            <div class="row mt-2 align-items-center">
+                <div class="col-12 col-md-3">Tên Phim</div>
+                <div class="col-12 col-md-9 fw-bold" id="Phim">
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-12 col-md-3">Rạp</div>
+                <div class="col-12 col-md-9 fw-bold" id="Rap">
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-12 col-md-3">Địa Chỉ</div>
+                <div class="col-12 col-md-9 fw-bold" id="Dia_Chi">
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-12 col-md-3">Phòng</div>
+                <div class="col-12 col-md-9 fw-bold" id="Phong">
+                </div>
+            </div>
+            <div class="row mt-2">
+                <label class="col-12 col-md-3">Ngày Chiếu</label>
+                <div class="col-12 col-md-9 fw-bold" id="Ngay_Chieu">
+                </div>
+            </div>
+            <div class="row mt-2">
+                <label class="col-12 col-md-3">Giờ Chiếu</label>
+                <div class="col-12 col-md-9 fw-bold" id="Gio_Chieu">
+                </div>
+            </div>
+            <div>
+                <h5 class="my-4">Danh Sách Ghế <span class="text-danger" id="So_Ghe_Trong"></span></h5>
+                <div id="Danh_Sach_Ghe"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-xl-8 mx-auto my-4">
+        <a class="btn btn-primary" href="/danh-sach-xuat-chieu">Trở Về Trang Tra Cứu</a>
+    </div>
+</div>
+<div class="p-4 m-1"></div>
+{{> Chan_Trang}}
+
+<script>
+    const Tai_Xuat_Chieu = () => {
+        const Xuat_Chieu = JSON.parse(`{{{Xuat_Chieu}}}`)
+
+        document.getElementById("Phim").innerText = Xuat_Chieu.Phim.Ten
+        document.getElementById("Rap").innerText = Xuat_Chieu.Phong.Rap.Ten
+        document.getElementById("Dia_Chi").innerText = Xuat_Chieu.Phong.Rap.Dia_Chi
+        document.getElementById("Phong").innerText = Xuat_Chieu.Phong.Ten
+        document.getElementById("Ngay_Chieu").innerText = Xuat_Chieu.Ngay_Chieu
+        document.getElementById("Gio_Chieu").innerText = `${Xuat_Chieu.Ca.Bat_Dau}-${Xuat_Chieu.Ca.Ket_Thuc} (${Xuat_Chieu.Ca.Ten})`
+
+        const Danh_Sach_Ghe = document.getElementById("Danh_Sach_Ghe")
+        const Ghe_Co_Ve = Xuat_Chieu.Ves.map(Ve => Ve.Ghe.ID)
+        const So_Ghe_Trong = Xuat_Chieu.Phong.Ghes.length - Ghe_Co_Ve.length
+        document.getElementById("So_Ghe_Trong").innerText = `(Còn ${So_Ghe_Trong} Ghế Trống)`
+
+        let Day_Ghe = document.createElement("div")
+        Day_Ghe.classList = "col-12 d-flex justify-content-between mt-2"
+        Xuat_Chieu.Phong.Ghes.forEach((Ghe, index) => {
+            const gheElement = document.createElement("span")
+            gheElement.classList = "btn btn-success px-2 py-1"
+            if (!Ghe_Co_Ve.includes(Ghe.ID)) {
+                gheElement.classList.remove("btn-success")
+                gheElement.classList.add("btn-secondary")
+                gheElement.classList.add("ghe_trong")
+                gheElement.setAttribute("data-id", Ghe.ID)
+                gheElement.setAttribute("data-ten", Ghe.Ten)
+            }
+            gheElement.innerText = String(index + 1).padStart(3, '0')
+            Day_Ghe.append(gheElement)
+
+            if ((index + 1) % 10 == 0) {
+                Danh_Sach_Ghe.append(Day_Ghe)
+                Day_Ghe = document.createElement("div")
+                Day_Ghe.classList = "col-12 d-flex justify-content-between mt-2"
+            }
+        })
+        if (Day_Ghe.children.length > 0) {
+            Danh_Sach_Ghe.append(Day_Ghe);
+        }
+
+    }
+    Tai_Xuat_Chieu()
+</script>

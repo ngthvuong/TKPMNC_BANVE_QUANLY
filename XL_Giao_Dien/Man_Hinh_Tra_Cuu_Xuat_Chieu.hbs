@@ -1,0 +1,94 @@
+{{> Dau_Trang}}
+<div class="p-4 m-1"></div>
+<div class="container-fluid">
+    <h3 class="col-12 col-xl-8 mx-auto my-4">MÀN HÌNH TRA CỨU XUẤT CHIẾU PHIM</h3>
+    <form action="" id="Tra_Cuu_Ve_Form">
+        <div class="row col-12 col-xl-8 mx-auto my-4">
+            <div class="col-12 col-md-4 px-0">
+                <select class="form-select" name="Ngay_Chieu" id="Ngay_Chieu" onchange="Loc_Du_Lieu()">
+                    <option value="">Chọn Ngày Chiếu...</option>
+                    {{#each Danh_Sach_Ngay_Chieu}}
+                    <option value="{{this}}">{{this}}</option>
+                    {{/each}}
+                </select>
+            </div>
+            <div class="col-12 col-md-4 px-0">
+                <select class="form-select" name="Phim" id="Phim" onchange="Loc_Du_Lieu()">
+                    <option value="0">Chọn Phim...</option>
+                    {{#each Danh_Sach_Phim}}
+                    <option value="{{ID}}">{{Ten}}</option>
+                    {{/each}}
+                </select>
+            </div>
+            <div class="col-12 col-md-4 px-0">
+                <select class="form-select" name="Ca" id="Ca" onchange="Loc_Du_Lieu()">
+                    <option value="0">Chọn Ca...</option>
+                    {{#each Danh_Sach_Ca}}
+                    <option value="{{ID}}">{{Bat_Dau}} - {{Ket_Thuc}} ({{Ten}})</option>
+                    {{/each}}
+                </select>
+            </div>
+        </div>
+        <div class="rows col-12 col-xl-8 mx-auto my-4">
+            <button type="button" class="btn btn-secondary" onclick="Lam_Moi_Bo_Loc()">Làm Mới Bộ Lọc</button>
+        </div>
+    </form>
+    <div class="rows col-12 col-xl-8 mx-auto my-4">
+        <h4>Danh Sách Xuất Chiếu</h4>
+        <div class="col-12 table-responsive">
+            <table class="table">
+                <thead>
+                    <tr class="table-dark">
+                        <th scope="col">STT</th>
+                        <th scope="col">Ngày Chiếu</th>
+                        <th scope="col">Ca Chiếu</th>
+                        <th scope="col">Rạp</th>
+                        <th scope="col">Tên Phim</th>
+                        <th scope="col">Thao Tác</th>
+                    </tr>
+                </thead>
+                <tbody id="Danh_Sach_Xuat_Chieu"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="p-4 m-1"></div>
+{{> Chan_Trang}}
+
+<script src="/Tai_Nguyen/js/Tra_Cuu_Xuat_Chieu.js"></script>
+<script>
+    const Tao_Danh_Sach_Sach_Chieu = () => {
+        Xuat_Chieu_HTML = document.getElementById("Danh_Sach_Xuat_Chieu")
+        Xuat_Chieu_HTML.innerHTML = ``
+        Danh_Sach_Xuat_Chieu.Danh_Sach_Xuat_Chieu_Da_Loc.forEach((Xuat_Chieu, index) => {
+            const trElement = document.createElement("tr")
+            trElement.innerHTML = `
+                <td>${index + 1}</td>
+                <td>${Xuat_Chieu.Ngay_Chieu}</td>
+                <td>${Xuat_Chieu.Ca.Bat_Dau} - ${Xuat_Chieu.Ca.Ket_Thuc} (${Xuat_Chieu.Ca.Ten})</td>
+                <td>${Xuat_Chieu.Phong.Rap.Ten}</td>
+                <td>${Xuat_Chieu.Phim.Ten}</td>
+                <td><a class="btn btn-sm btn-success" href="/xuat-chieu/${Xuat_Chieu.ID}">Xóa</a></td>
+            `
+            Xuat_Chieu_HTML.append(trElement)
+        })
+    }
+    const Loc_Du_Lieu = () => {
+        const Tra_Cuu_Ve_Form = document.getElementById("Tra_Cuu_Ve_Form")
+        Danh_Sach_Xuat_Chieu.Gan_Ngay_Chieu(Tra_Cuu_Ve_Form.elements.Ngay_Chieu.value)
+        Danh_Sach_Xuat_Chieu.Gan_Phim_ID(Tra_Cuu_Ve_Form.elements.Phim.value)
+        Danh_Sach_Xuat_Chieu.Gan_Ca_ID(Tra_Cuu_Ve_Form.elements.Ca.value)
+        Danh_Sach_Xuat_Chieu.Loc_Xuat_Chieu()
+    }
+
+    const Danh_Sach_Xuat_Chieu = new Tra_Cuu_Xuat_Chieu(JSON.parse(`{{{Danh_Sach_Xuat_Chieu}}}`))
+    Danh_Sach_Xuat_Chieu.Dang_Ky_Xu_Ly_Su_Kien(Tao_Danh_Sach_Sach_Chieu)
+    Danh_Sach_Xuat_Chieu.Loc_Xuat_Chieu()
+
+    const Lam_Moi_Bo_Loc = () => {
+        const Tra_Cuu_Ve_Form = document.querySelectorAll("#Tra_Cuu_Ve_Form select").forEach(select => {
+            select.selectedIndex = 0
+        })
+        Loc_Du_Lieu()
+    }
+</script>
