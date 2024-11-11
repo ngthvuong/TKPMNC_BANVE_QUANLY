@@ -38,6 +38,6 @@ app.use(express.urlencoded({ extended: true }))
 
 app.use(routes)
 
-app.listen(4000, () => {
-    console.log("Server dang chay cong 4000")
+app.listen(3001, () => {
+    console.log("Server dang chay cong 3001")
 })

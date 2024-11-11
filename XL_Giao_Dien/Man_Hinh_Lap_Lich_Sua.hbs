@@ -1,9 +1,9 @@
 {{> Dau_Trang}}
 <div class="p-4 m-1"></div>
 <div class="container-fluid">
-    <h3 class="col-12 col-md-8 mx-auto my-4">MÀN HÌNH TẠO XUẤT CHIẾU</h3>
+    <h3 class="col-12 col-md-8 mx-auto my-4">MÀN HÌNH CẬP NHẬT XUẤT CHIẾU</h3>
     <div class="d-flex justify-content-between row col-12 col-md-8 mx-auto my-4">
-        <form class="col-12 col-md-6 px-0" onsubmit="Tao_Xuat_Chieu(event)">
+        <form class="col-12 col-md-6 px-0" onsubmit="Sua_Xuat_Chieu(event)">
             <div class="row mt-2">
                 <label class="col-form-label col-12 col-md-3" for="Phim">Tên Phim</label>
                 <div class="col-12 col-md-9">
@@ -58,7 +58,7 @@
                 </div>
             </div>
             <div class="rows align-items-center mt-4">
-                <button class="btn btn-success" type="submit">Tạo Xuất Chiếu</button>
+                <button class="btn btn-success" type="submit">Cập Nhật Xuất Chiếu</button>
                 <a class="btn btn-secondary" href="/lap-lich/danh-sach">Trở Về Trang Danh Sách</a>
             </div>
             <div id="Thong_Bao_Loi" class="col-12 alert alert-warning mt-3 d-none"></div>
@@ -68,18 +68,58 @@
 </div>
 <div class="p-4 m-1"></div>
 {{> Chan_Trang}}
-
 <script>
     const Danh_Sach_Phong_Theo_Rap = JSON.parse(`{{{Danh_Sach_Phong_Theo_Rap}}}`)
+    const Xuat_Chieu = JSON.parse(`{{{Xuat_Chieu}}}`)
+
     const today = new Date();
     const formattedDate = today.toISOString().split('T')[0];
-    document.getElementById("Ngay_Chieu").setAttribute("min", formattedDate)
+
+    const Khoi_Dong_Man_Hinh = () => {
+        document.getElementById("Ngay_Chieu").setAttribute("min", formattedDate)
+
+        const Phim_Select = document.getElementById("Phim")
+        Phim_Select.querySelectorAll("option").forEach((option, index) => {
+            if (option.getAttribute("value") == Xuat_Chieu.Phim.ID) {
+                Phim_Select.selectedIndex = index
+            }
+        })
+
+        const Rap_Select = document.getElementById("Rap")
+        Rap_Select.querySelectorAll("option").forEach((option, index) => {
+            if (option.getAttribute("value") == Xuat_Chieu.Phong.Rap.ID) {
+                Rap_Select.selectedIndex = index
+            }
+        })
+
+        Loc_Phong()
+        const Phong_Select = document.getElementById("Phong")
+        Phong_Select.querySelectorAll("option").forEach((option, index) => {
+            if (option.getAttribute("value") == Xuat_Chieu.Phong.ID) {
+                Phong_Select.selectedIndex = index
+            }
+        })
+
+        const [Ngay, Thang, Nam] = Xuat_Chieu.Ngay_Chieu.split("-")
+        const Ngay_Chieu = document.getElementById("Ngay_Chieu")
+        Ngay_Chieu.value = `${Nam}-${Thang}-${Ngay}`
+
+        const Ca_Select = document.getElementById("Ca")
+        Ca_Select.querySelectorAll("option").forEach((option, index) => {
+            if (option.getAttribute("value") == Xuat_Chieu.Ca.ID) {
+                Ca_Select.selectedIndex = index
+            }
+        })
+
+        const Don_Gia = document.getElementById("Don_Gia")
+        Don_Gia.value = Xuat_Chieu.Don_Gia
+
+    }
 
     const Loc_Phong = () => {
         const Rap_ID = document.getElementById("Rap").value
         const Phong_Select = document.getElementById("Phong")
         Phong_Select.innerHTML = `<option value="0">Chọn Phòng...</option>`
-        console.log(Rap_ID)
         if (Danh_Sach_Phong_Theo_Rap[Rap_ID]) {
             Danh_Sach_Phong_Theo_Rap[Rap_ID].forEach(Phong => {
                 Phong_Select.innerHTML += `<option value="${Phong.ID}">${Phong.Ten}</option>`
@@ -87,7 +127,7 @@
         }
     }
 
-    const Tao_Xuat_Chieu = async (event) => {
+    const Sua_Xuat_Chieu = async (event) => {
         event.preventDefault()
         const Thong_Bao_Loi = document.getElementById("Thong_Bao_Loi")
         Thong_Bao_Loi.innerHTML = ``
@@ -127,8 +167,7 @@
             return
         }
 
-
-        const Phan_Hoi = await fetch("/lap-lich/them", {
+        const Phan_Hoi = await fetch(`/lap-lich/sua/${Xuat_Chieu.ID}`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -151,4 +190,5 @@
         }
     }
 
+    Khoi_Dong_Man_Hinh()
 </script>

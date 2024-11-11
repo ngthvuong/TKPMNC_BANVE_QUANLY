@@ -1,0 +1,44 @@
+{{> Dau_Trang}}
+<div class="p-4 m-1"></div>
+<div class="container-fluid">
+    <h3 class="col-12 col-md-8 mx-auto my-4">MÀN HÌNH XÓA XUẤT CHIẾU</h3>
+    <div class="d-flex justify-content-between row col-12 col-md-8 mx-auto my-4">
+        <form class="col-12 col-md-6 px-0" onsubmit="Xoa_Xuat_Chieu(event)">
+            <div class="col-12 mt-2">
+                Bạn có chắc chắn muốn xóa xuất chiếu này?
+            </div>
+            <div class="rows align-items-center mt-4">
+                <button class="btn btn-danger" type="submit">Đồng Ý</button>
+                <a class="btn btn-secondary" href="/lap-lich/danh-sach">Trở Về Trang Danh Sách</a>
+            </div>
+            <div id="Thong_Bao_Loi" class="col-12 alert alert-warning mt-3 d-none"></div>
+        </form>
+    </div>
+
+</div>
+<div class="p-4 m-1"></div>
+{{> Chan_Trang}}
+<script>
+    const Xuat_Chieu = JSON.parse(`{{{Xuat_Chieu}}}`)
+
+    const Xoa_Xuat_Chieu = async (event) => {
+        event.preventDefault()
+
+        const Thong_Bao_Loi = document.getElementById("Thong_Bao_Loi")
+        Thong_Bao_Loi.innerHTML = ``
+        Thong_Bao_Loi.classList.add("d-none")
+
+        const Phan_Hoi = await fetch(`/lap-lich/xoa/${Xuat_Chieu.ID}`, {
+            method: "POST"
+        })
+        const Ket_Qua = await Phan_Hoi.json()
+        if (Ket_Qua.error) {
+            Thong_Bao_Loi.innerHTML = Ket_Qua.error
+            Thong_Bao_Loi.classList.remove("d-none")
+            return
+        } else {
+            window.location.href = "/lap-lich/danh-sach"
+        }
+    }
+
+</script>

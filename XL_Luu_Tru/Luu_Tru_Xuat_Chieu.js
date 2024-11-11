@@ -48,6 +48,40 @@ class Luu_Tru_Xuat_Chieu {
         const Ket_Qua = await Phan_Hoi.json()
         return Ket_Qua
     }
+
+    Sua_Xuat_Chieu = async (
+        ID,
+        Ngay_Chieu,
+        Don_Gia,
+        Phim_ID,
+        Ca_ID,
+        Phong_ID
+    ) => {
+        const data = {
+            Ngay_Chieu,
+            Don_Gia,
+            Phim_ID,
+            Ca_ID,
+            Phong_ID
+        }
+        const Phan_Hoi = await fetch(`http://localhost:6102/quanly/xuatchieu/${ID}`, {
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        const Ket_Qua = await Phan_Hoi.json()
+        return Ket_Qua
+    }
+
+    Xoa_Xuat_Chieu = async (ID) => {
+        const Phan_Hoi = await fetch(`http://localhost:6102/quanly/xuatchieu/${ID}`, {
+            method: "DELETE"
+        })
+        const Ket_Qua = await Phan_Hoi.json()
+        return Ket_Qua
+    }
 }
 
 module.exports = new Luu_Tru_Xuat_Chieu()
