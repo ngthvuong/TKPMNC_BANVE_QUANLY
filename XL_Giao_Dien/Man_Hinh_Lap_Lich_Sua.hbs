@@ -119,7 +119,7 @@
     const Loc_Phong = () => {
         const Rap_ID = document.getElementById("Rap").value
         const Phong_Select = document.getElementById("Phong")
-        Phong_Select.innerHTML = `<option value="0">Chọn Phòng...</option>`
+        Phong_Select.innerHTML = `<option value="">Chọn Phòng...</option>`
         if (Danh_Sach_Phong_Theo_Rap[Rap_ID]) {
             Danh_Sach_Phong_Theo_Rap[Rap_ID].forEach(Phong => {
                 Phong_Select.innerHTML += `<option value="${Phong.ID}">${Phong.Ten}</option>`
@@ -140,9 +140,16 @@
         const Ca_ID = Bieu_Mau_Xuat_Chieu.elements.Ca.value
         const Ngay_Chieu = Bieu_Mau_Xuat_Chieu.elements.Ngay_Chieu.value
         const Don_Gia = Bieu_Mau_Xuat_Chieu.elements.Don_Gia.value
+        const Rap_ID = Bieu_Mau_Xuat_Chieu.elements.Rap.value
+
 
         if (!Phim_ID) {
             Thong_Bao_Loi.innerHTML = "Vui lòng chọn phim!"
+            Thong_Bao_Loi.classList.remove("d-none")
+            return
+        }
+        if (!Rap_ID) {
+            Thong_Bao_Loi.innerHTML = "Vui lòng chọn rạp!"
             Thong_Bao_Loi.classList.remove("d-none")
             return
         }
