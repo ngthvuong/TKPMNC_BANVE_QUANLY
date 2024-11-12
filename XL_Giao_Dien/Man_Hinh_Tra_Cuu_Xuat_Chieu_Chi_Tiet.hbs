@@ -65,7 +65,8 @@
         document.getElementById("Don_Gia").innerText = Xuat_Chieu.Don_Gia.toLocaleString()
 
         const Danh_Sach_Ghe = document.getElementById("Danh_Sach_Ghe")
-        const Ghe_Co_Ve = Xuat_Chieu.Ves.map(Ve => Ve.Ghe.ID)
+        
+        const Ghe_Co_Ve = (Xuat_Chieu.Ves) ? Xuat_Chieu.Ves.map(Ve => Ve.Ghe.ID) : []
         const So_Ghe_Trong = Xuat_Chieu.Phong.Ghes.length - Ghe_Co_Ve.length
         document.getElementById("So_Ghe_Trong").innerText = `(Còn ${So_Ghe_Trong} Ghế Trống)`
 
