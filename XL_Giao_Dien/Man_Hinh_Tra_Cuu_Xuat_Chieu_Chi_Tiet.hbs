@@ -34,6 +34,11 @@
                 <div class="col-12 col-md-9 fw-bold" id="Gio_Chieu">
                 </div>
             </div>
+            <div class="row mt-2">
+                <label class="col-12 col-md-3">Giá Vé</label>
+                <div class="col-12 col-md-9 fw-bold" id="Don_Gia">
+                </div>
+            </div>
             <div>
                 <h5 class="my-4">Danh Sách Ghế <span class="text-danger" id="So_Ghe_Trong"></span></h5>
                 <div id="Danh_Sach_Ghe"></div>
@@ -41,7 +46,7 @@
         </div>
     </div>
     <div class="col-12 col-xl-8 mx-auto my-4">
-        <a class="btn btn-primary" href="/danh-sach-xuat-chieu">Trở Về Trang Tra Cứu</a>
+        <a class="btn btn-primary" href="/xuat-chieu/danh-sach">Trở Về Trang Tra Cứu</a>
     </div>
 </div>
 <div class="p-4 m-1"></div>
@@ -57,6 +62,7 @@
         document.getElementById("Phong").innerText = Xuat_Chieu.Phong.Ten
         document.getElementById("Ngay_Chieu").innerText = Xuat_Chieu.Ngay_Chieu
         document.getElementById("Gio_Chieu").innerText = `${Xuat_Chieu.Ca.Bat_Dau}-${Xuat_Chieu.Ca.Ket_Thuc} (${Xuat_Chieu.Ca.Ten})`
+        document.getElementById("Don_Gia").innerText = Xuat_Chieu.Don_Gia.toLocaleString()
 
         const Danh_Sach_Ghe = document.getElementById("Danh_Sach_Ghe")
         const Ghe_Co_Ve = Xuat_Chieu.Ves.map(Ve => Ve.Ghe.ID)

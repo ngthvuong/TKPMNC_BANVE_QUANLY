@@ -112,7 +112,7 @@
                     Danh_Sach_Xuat_Chieu.innerHTML += `
                         <tr>
                             <td>${Tong_Ve_Theo_Ca.Bat_Dau} - ${Tong_Ve_Theo_Ca.Ket_Thuc} (${Tong_Ve_Theo_Ca.Ten})</td>
-                            <td>${Tong_Ve_Theo_Ca.So_Luong_Ve}</td>
+                            <td>${Tong_Ve_Theo_Ca.So_Luong_Ve.toLocaleString()}</td>
                             <td>${((Tong_Ve_Theo_Ca.So_Luong_Ve / Ket_Qua.Tong_So_Ve) * 100).toFixed(2)}%</td>
                         </tr>
                     `
