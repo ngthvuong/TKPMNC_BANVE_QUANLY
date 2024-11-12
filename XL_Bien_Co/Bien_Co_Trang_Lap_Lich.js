@@ -11,7 +11,7 @@ const Luu_Tru_Rap = require("../XL_Luu_Tru/Luu_Tru_Rap")
 const controller = {}
 
 controller.Man_Hinh_Lap_Lich_Danh_Sach = async (Yeu_Cau, Phan_Hoi) => {
-    const Quan_Ly_ID = Phan_Hoi.locals.Nguoi_Dung.id
+    const Quan_Ly_ID = Phan_Hoi.locals.Quan_Ly.id
 
     const Danh_Sach_Xuat_Chieu = await Luu_Tru_Xuat_Chieu.Lay_Danh_Sach_Chua_Chieu_Theo_Quan_Ly(Quan_Ly_ID)
     const Danh_Sach_Phim = Nghiep_Vu_Xuat_Chieu.Lay_Danh_Sach_Phim(Danh_Sach_Xuat_Chieu)
@@ -25,7 +25,7 @@ controller.Man_Hinh_Lap_Lich_Danh_Sach = async (Yeu_Cau, Phan_Hoi) => {
     })
 }
 controller.Man_Hinh_Lap_Lich_Them = async (Yeu_Cau, Phan_Hoi) => {
-    const Quan_Ly_ID = Phan_Hoi.locals.Nguoi_Dung.id
+    const Quan_Ly_ID = Phan_Hoi.locals.Quan_Ly.id
 
     const Danh_Sach_Ca = await Luu_Tru_Ca.Lay_Danh_Sach_Ca()
     const Danh_Sach_Phim = await Luu_Tru_Phim.Lay_Danh_Sach_Phim()
@@ -61,7 +61,7 @@ controller.Man_Hinh_Lap_Lich_Sua = async (Yeu_Cau, Phan_Hoi) => {
         return redirect("/lap-lich/danh-sach")
     }
 
-    const Quan_Ly_ID = Phan_Hoi.locals.Nguoi_Dung.id
+    const Quan_Ly_ID = Phan_Hoi.locals.Quan_Ly.id
 
     const Danh_Sach_Ca = await Luu_Tru_Ca.Lay_Danh_Sach_Ca()
     const Danh_Sach_Phim = await Luu_Tru_Phim.Lay_Danh_Sach_Phim()

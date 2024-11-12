@@ -7,10 +7,10 @@ const XL_Bien_Co_Trang_Lap_Lich = require("../XL_Bien_Co/Bien_Co_Trang_Lap_Lich"
 const XL_Bien_Co_Trang_Thong_Ke_Ve_Ban = require("../XL_Bien_Co/Bien_Co_Trang_Thong_Ke_Ve_Ban")
 
 routes.use((Yeu_Cau, Phan_Hoi, next) => {
-    if (!Yeu_Cau.session.Nguoi_Dung) {
+    if (!Yeu_Cau.session.Quan_Ly) {
         return Phan_Hoi.redirect("/dang-nhap")
     }
-    Phan_Hoi.locals.Nguoi_Dung = Yeu_Cau.session.Nguoi_Dung
+    Phan_Hoi.locals.Quan_Ly = Yeu_Cau.session.Quan_Ly
 
     next()
 })

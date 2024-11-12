@@ -5,7 +5,7 @@ const Luu_Tru_Nhan_Vien = require("../XL_Luu_Tru/Luu_Tru_Nhan_Vien")
 const controller = {}
 
 controller.Man_Hinh_Dang_Nhap = (Yeu_Cau, Phan_Hoi) =>{
-    if(Yeu_Cau.session.Nguoi_Dung){
+    if(Yeu_Cau.session.Quan_Ly){
         return Phan_Hoi.redirect("/")
     }
     return Phan_Hoi.render("Man_Hinh_Dang_Nhap")
@@ -30,7 +30,7 @@ controller.Dang_Nhap = async (Yeu_Cau, Phan_Hoi) =>{
             throw new Error("Mật khẩu không chính xác!")
         }
 
-        Yeu_Cau.session.Nguoi_Dung = Nhan_Vien
+        Yeu_Cau.session.Quan_Ly = Nhan_Vien
 
         return Phan_Hoi.json({ message: "Đăng nhập thành công!" })
     }
@@ -45,7 +45,7 @@ controller.Dang_Nhap = async (Yeu_Cau, Phan_Hoi) =>{
 }
 
 controller.Dang_Xuat = (Yeu_Cau, Phan_Hoi) => {
-    delete Yeu_Cau.session.Nguoi_Dung
+    delete Yeu_Cau.session.Quan_Ly
     return Phan_Hoi.redirect("/dang-nhap")
 }
 
